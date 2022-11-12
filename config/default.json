@@ -7,20 +7,19 @@
         }
     }],
     "mqtt": {
-        "host": "mqtts://localhost:8883",
+        "host": "mqtt://<yourbrokerIP>:1883",
         "options": {
             "rejectUnauthorized": false,
-            "username": "test",
-            "password": "test1234",
+            "username": "<yourbrokerusername>",
+            "password": "<yourbrokerpassword>",
             "clientId": "lox_to_mqtt_gateway"
         }
     },
     "miniserver": {
-        "host": "192.164.0.77:80",
-        "username": "testlox",
-        "password": "1234",
+        "host": "<yourminiserver>:80",
+        "username": "<yourminiserverusername>",
+        "password": "<yourminiserverpassword>",
         "readonly": false,
-        "encrypted" : true,
         "mqtt_prefix": "lox"
     }
 }
