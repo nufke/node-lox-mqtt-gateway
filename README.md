@@ -2,7 +2,7 @@
 
 Gateway for the Loxone Miniserver to communicate over MQTT. The gateway connects to the Loxone Miniserver websocket and an MQTT broker (e.g. LoxBerry)
 
-_NOTE: The MQTT Topic API of this version differs from the upstream repository. In this version, all state changes are immediately relayed to MQTT._
+_NOTE: The MQTT Topic API of this version differs from the upstream repository. In this version, all Miniserver state changes are immediately relayed to MQTT using their uuid._
 
 **This is an experimental version. Use it at your own risk.**
 
@@ -74,9 +74,9 @@ This section contains the contains the options for the Loxone Miniserver:
 }
 ```
 
-**Example**
+### Configuration file example
 
-File `./config/default.json`:
+All settings can be added to a single configuation file. An example can be found in `./config/default.json`:
 
 ```json
 {
@@ -118,10 +118,10 @@ node lox-mqtt-gateway --NODE_CONFIG_DIR='config'
 
 ### Receiving state changes of the Loxone Miniserver and broadcast them to MQTT
 
-To receive actual states of controls and other element, you need to subscribe to the following topic:
+To receive actual states of controls and other elements, you need to subscribe to the following topic:
 
 ```
-mqtt_prefix/<serialnr>/<uuid>/states/#
+<mqtt_prefix>/<serialnr>/<uuid>/states/#
 ```
 
 The `serialnr` of your Miniserver and the `uuid` of the control or state can be found in the Loxone structure file `LoxAPP3.json` on your Miniserver.
@@ -139,7 +139,7 @@ Where `lox` is the MQTT prefix, `0123456789AB` is the Miniserver serial nr., `01
 To control the Loxone Miniserver, you should send messages to the following MQTT topic:
 
 ```
-mqtt_prefix/<serialnr>/<uuid>/cmd
+<mqtt_prefix>/<serialnr>/<uuid>/cmd
 ```
 
 **Example**
