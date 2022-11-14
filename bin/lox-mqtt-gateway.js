@@ -44,10 +44,12 @@ lox_client.on('get_structure_file', function(data) {
 
     mqtt_client.subscribe(lox_mqtt_adaptor.get_topic_for_subscription());
 
-    lox_mqtt_adaptor.on('for_mqtt', function(topic, data){
-        logger.debug("MQTT Adaptor - for mqtt: ", {topic: topic, data: data});
+    lox_mqtt_adaptor.on('for_mqtt', function(topic, data, retain_){
+        let payload = String(data);
+        let options = { retain: retain_ };
+        logger.debug("MQTT Adaptor - for mqtt: ", {topic: topic, data: payload});
         var fixedTopicName = topic.replace("+", "_").replace("#", "_")
-        mqtt_client.publish(fixedTopicName, data, pubopts);
+        mqtt_client.publish(fixedTopicName, payload, options);
     });
 });
 
