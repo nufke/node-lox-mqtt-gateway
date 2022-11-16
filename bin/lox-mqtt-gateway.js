@@ -51,6 +51,8 @@ lox_client.on('get_structure_file', function(data) {
         var fixedTopicName = topic.replace("+", "_").replace("#", "_")
         mqtt_client.publish(fixedTopicName, payload, options);
     });
+
+    lox_mqtt_adaptor.publish_mqtt_structure();
 });
 
 mqtt_client.on('connect', function(conack){
