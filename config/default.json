@@ -9,7 +9,6 @@
     "mqtt": {
         "host": "mqtt://<yourbrokerIP>:1883",
         "options": {
-            "rejectUnauthorized": false,
             "username": "<yourbrokerusername>",
             "password": "<yourbrokerpassword>",
             "clientId": "lox_to_mqtt_gateway",

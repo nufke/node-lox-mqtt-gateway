@@ -16,9 +16,9 @@ npm i
 
 ## Configuration
 
-### Logging settings (winston)
+### Logging settings
 
-It contains array of transports with its options.
+The [winston](https://github.com/winstonjs/winston) logger is used to support different logging capabilities.
 
 ```json
 {
@@ -38,13 +38,22 @@ It contains array of transports with its options.
 
 This section contains the options for [MQTT](https://github.com/mqttjs/MQTT.js):
 
+* **host** - Hostname address and port for the MQTT broker
+* **username** - Credentials for the MQTT broker
+* **password**
+* **mqtt_prefix** - MQTT topic prefix
+* **icon_path** - Path where application-specific or custom SVG icons are (publicly) accessible
+
+
 ```json
 {
     "mqtt": {
         "host": "mqtt://localhost:1883",
         "options": {
             "username": "test",
-            "password": "test1234"
+            "password": "test1234",
+            "mqtt_prefix": "lox",
+            "icon_path": "/assets/svg_icons"
         }
     }
 }
@@ -52,14 +61,13 @@ This section contains the options for [MQTT](https://github.com/mqttjs/MQTT.js):
 
 ### Loxone Miniserver settings
 
-This section contains the contains the options for the Loxone Miniserver:
+This section contains the options for the Loxone Miniserver:
 
 * **host** - Miniserver hostname address and port (hostname:port)
-* **username** - Credentials for Miniserver
+* **username** - Credentials for the Loxone Miniserver
 * **password**
 * **readonly** - if it's set to true then no commands will be send to Miniserver - it's for testing and development
 * **encrypted** - use AES-256-CBC encrypted web sockets
-* **mqtt_prefix** - Topic prefix for Loxone™ messages
 
 ```json
 {
@@ -68,8 +76,7 @@ This section contains the contains the options for the Loxone Miniserver:
         "username": "testlox",
         "password": "1234",
         "readonly": false,
-        "encrypted": true,
-        "mqtt_prefix": "lox"
+        "encrypted": true
     }
 }
 ```
@@ -90,10 +97,10 @@ All settings can be added to a single configuation file. An example can be found
     "mqtt": {
         "host": "mqtts://localhost:8883",
         "options": {
-            "rejectUnauthorized": false,
             "username": "test",
             "password": "test1234",
-            "clientId": "lox_to_mqtt_gateway"
+            "mqtt_prefix": "lox",
+            "icon_path": "/assets/svg_icons"
         }
     },
     "miniserver": {
@@ -101,7 +108,7 @@ All settings can be added to a single configuation file. An example can be found
         "username": "testlox",
         "password": "1234",
         "readonly": false,
-        "mqtt_prefix": "lox"
+        "encrypted": true
     }
 }
 ```
@@ -115,6 +122,16 @@ node lox-mqtt-gateway --NODE_CONFIG_DIR='config'
 ```
 
 ## MQTT Topic API
+
+### Broadcast the control structure over MQTT
+
+When starting the gateway, the first message published over MQTT is the structure of the available controls, categories and rooms extracted from the Loxone Miniserver. To receive this structure, a client needs to subscribe to the following topic:
+
+```
+<mqtt_prefix>/structure
+```
+
+*NOTE: This structure is **not identical** to the Loxone structure, but looks simiar since the same information is shared over MQTT. A different structure has been created to capture and exchange other non-Loxone information.*
 
 ### Receiving state changes of the Loxone Miniserver and broadcast them to MQTT
 
