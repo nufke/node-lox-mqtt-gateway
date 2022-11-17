@@ -12,14 +12,15 @@
             "rejectUnauthorized": false,
             "username": "<yourbrokerusername>",
             "password": "<yourbrokerpassword>",
-            "clientId": "lox_to_mqtt_gateway"
+            "clientId": "lox_to_mqtt_gateway",
+            "mqtt_prefix": "lox",
+            "icon_path": "/assets/svg_icons"
         }
     },
     "miniserver": {
         "host": "<yourminiserver>:80",
         "username": "<yourminiserverusername>",
         "password": "<yourminiserverpassword>",
-        "readonly": false,
-        "mqtt_prefix": "lox"
+        "readonly": false
     }
 }
