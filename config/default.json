@@ -11,7 +11,6 @@
         "options": {
             "username": "<yourbrokerusername>",
             "password": "<yourbrokerpassword>",
-            "clientId": "lox_to_mqtt_gateway",
             "mqtt_prefix": "lox",
             "icon_path": "/assets/svg_icons"
         }
