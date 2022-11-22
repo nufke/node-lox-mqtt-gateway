@@ -11,7 +11,8 @@
         "options": {
             "username": "<yourbrokerusername>",
             "password": "<yourbrokerpassword>",
-            "mqtt_prefix": "lox",
+            "mqtt_prefix_lox": "loxone",
+            "mqtt_prefix_app": "loxberry/app",
             "icon_path": "/assets/svg_icons"
         }
     },
