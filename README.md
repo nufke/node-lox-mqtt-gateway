@@ -1,6 +1,7 @@
 # node-lox-mqtt-gateway
 
-Gateway for the Loxone Miniserver to communicate over MQTT. The gateway connects to the Loxone Miniserver websocket and an MQTT broker (e.g. LoxBerry)
+Gateway for the Loxone Miniserver to communicate over MQTT. The gateway connects to the Loxone Miniserver websocket and an MQTT broker (e.g. LoxBerry).
+This gateway supports integration with the [LoxBerry Progressive Web App (PWA)](https://github.com/nufke/loxberrypwa) by creating and sending a dedicated structure to the App to exchange information between the Loxone Miniserver and the App.
 
 _NOTE: The MQTT Topic API of this version differs from the upstream repository. In this version, all Miniserver state changes are immediately relayed to MQTT using their uuid._
 
@@ -41,10 +42,6 @@ This section contains the options for [MQTT](https://github.com/mqttjs/MQTT.js):
 * **host** - Hostname address and port for the MQTT broker
 * **username** - Credentials for the MQTT broker
 * **password**
-* **mqtt_prefix_lox** - MQTT topic prefix for Loxone messages
-* **mqtt_prefix_app** - MQTT topic prefix for LoxBerry App messages
-* **icon_path** - Path where application-specific or custom SVG icons are (publicly) accessible
-
 
 ```json
 {
@@ -53,10 +50,25 @@ This section contains the options for [MQTT](https://github.com/mqttjs/MQTT.js):
         "options": {
             "username": "test",
             "password": "test1234",
-            "mqtt_prefix_lox": "loxone",
-            "mqtt_prefix_app": "loxberry/app",
-            "icon_path": "/assets/svg_icons"
         }
+    }
+}
+```
+
+### LoxBerry Progressive Web App (PWA) settings
+
+This section contains the options for the [LoxBerry Progressive Web App (PWA)](https://github.com/nufke/loxberrypwa):
+
+* **mqtt_prefix** - MQTT topic prefix for LoxBerry PWA messages
+* **icon_path** - Path where application-specific or custom SVG icons are (publicly) accessible
+* **publish_structure** - Publish App structure at gateway start-up
+
+```json
+{
+    "loxberrypwa": {
+        "mqtt_prefix": "loxberry/app",
+        "icon_path": "/assets/svg_icons",
+        "publish_structure": true
     }
 }
 ```
@@ -70,7 +82,8 @@ This section contains the options for the Loxone Miniserver:
 * **password**
 * **readonly** - if it's set to true then no commands will be send to Miniserver - it's for testing and development
 * **encrypted** - use AES-256-CBC encrypted web sockets
-
+* **mqtt_prefix** - MQTT topic prefix for the Loxone Miniserver messages
+*
 ```json
 {
     "miniserver": {
@@ -78,7 +91,8 @@ This section contains the options for the Loxone Miniserver:
         "username": "testlox",
         "password": "1234",
         "readonly": false,
-        "encrypted": true
+        "encrypted": true,
+        "mqtt_prefix": "loxone"
     }
 }
 ```
@@ -100,18 +114,21 @@ All settings can be added to a single configuation file. An example can be found
         "host": "mqtts://localhost:8883",
         "options": {
             "username": "test",
-            "password": "test1234",
-            "mqtt_prefix_lox": "loxone",
-            "mqtt_prefix_app": "loxberry/app",
-            "icon_path": "/assets/svg_icons"
+            "password": "test1234"
         }
+    },
+    "loxberrypwa": {
+        "mqtt_prefix": "loxberry/app",
+        "icon_path": "/assets/svg_icons",
+        "publish_structure": true
     },
     "miniserver": {
         "host": "192.168.0.77:80",
         "username": "testlox",
         "password": "1234",
         "readonly": false,
-        "encrypted": true
+        "encrypted": true,
+        "mqtt_prefix": "loxone"
     }
 }
 ```
@@ -131,17 +148,17 @@ node lox-mqtt-gateway --NODE_CONFIG_DIR='config'
 When starting the gateway, the first message published over MQTT is the structure of the available controls, categories and rooms extracted from the Loxone Miniserver. To receive this structure, a client (e.g., [loxberrypwa](https://github.com/nufke/loxberrypwa) needs to subscribe to the following topic:
 
 ```
-<mqtt_prefix_app>/structure
+<loxberrypwa mqtt_prefix>/structure
 ```
 
 *NOTE: This structure is **not identical** to the Loxone structure, but looks simiar since the same information is shared over MQTT. A different structure has been created to integrated with other non-Loxone devices over MQTT.*
 
-### Broadcasting a Loxone state change over MQTT
+### Broadcasting a Loxone Miniserver state changes over MQTT
 
 To receive actual states of controls and other elements, you need to subscribe to the following topic:
 
 ```
-<mqtt_prefix_lox>/<serialnr>/<uuid>/#
+<miniserver mqtt_prefix>/<serialnr>/<uuid>/#
 ```
 
 The topic prefix `<mqtt_prefix_lox>` will subscribe to messages coming from a Loxone Miniserver, with `serialnr` and the `uuid` of a state, as can be found in the Loxone structure file `LoxAPP3.json` on your Miniserver.
@@ -159,7 +176,7 @@ Where `loxone` is the MQTT prefix, `0123456789AB` is the Miniserver serial nr., 
 To control the Loxone Miniserver, you should send messages to the following MQTT topic:
 
 ```
-<mqtt_prefix_lox>/<serialnr>/<control-uuid>/cmd
+<miniserver mqtt_prefix>/<serialnr>/<control-uuid>/cmd
 ```
 
 **Example**

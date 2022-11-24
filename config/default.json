@@ -11,16 +11,19 @@
         "options": {
             "username": "<yourbrokerusername>",
             "password": "<yourbrokerpassword>",
-            "mqtt_prefix_lox": "loxone",
-            "mqtt_prefix_app": "loxberry/app",
-            "icon_path": "/assets/svg_icons",
-            "publish_structure": false
         }
+    },
+    "loxberrypwa": {
+        "mqtt_prefix": "loxberry/app",
+        "icon_path": "/assets/svg_icons",
+        "publish_structure": true
     },
     "miniserver": {
         "host": "<yourminiserver>:80",
         "username": "<yourminiserverusername>",
         "password": "<yourminiserverpassword>",
-        "readonly": false
+        "readonly": false,
+        "encrypted": true,
+        "mqtt_prefix": "loxone"
     }
 }

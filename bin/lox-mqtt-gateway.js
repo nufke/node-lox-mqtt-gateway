@@ -40,7 +40,7 @@ lox_client.on('get_structure_file', function(data) {
         function(value) {
             logger.warn("MQTT Structure - invalid type of control", value);
         }
-    ), config.get('mqtt'));
+    ));
 
     mqtt_client.subscribe(lox_mqtt_adaptor.get_topic_for_subscription());
 
@@ -52,7 +52,7 @@ lox_client.on('get_structure_file', function(data) {
         mqtt_client.publish(fixedTopicName, payload, options);
     });
 
-    if (config.mqtt.options.publish_structure)
+    if (config.loxberrypwa.publish_structure)
       lox_mqtt_adaptor.publish_mqtt_structure();
 });
 
