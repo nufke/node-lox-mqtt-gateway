@@ -52,7 +52,8 @@ lox_client.on('get_structure_file', function(data) {
         mqtt_client.publish(fixedTopicName, payload, options);
     });
 
-    lox_mqtt_adaptor.publish_mqtt_structure();
+    if (config.mqtt.options.publish_structure)
+      lox_mqtt_adaptor.publish_mqtt_structure();
 });
 
 mqtt_client.on('connect', function(conack){

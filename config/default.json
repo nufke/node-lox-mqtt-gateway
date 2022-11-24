@@ -13,7 +13,8 @@
             "password": "<yourbrokerpassword>",
             "mqtt_prefix_lox": "loxone",
             "mqtt_prefix_app": "loxberry/app",
-            "icon_path": "/assets/svg_icons"
+            "icon_path": "/assets/svg_icons",
+            "publish_structure": false
         }
     },
     "miniserver": {
