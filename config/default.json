@@ -10,7 +10,7 @@
         "host": "mqtt://<yourbrokerIP>:1883",
         "options": {
             "username": "<yourbrokerusername>",
-            "password": "<yourbrokerpassword>",
+            "password": "<yourbrokerpassword>"
         }
     },
     "loxberrypwa": {

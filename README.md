@@ -83,7 +83,7 @@ This section contains the options for the Loxone Miniserver:
 * **readonly** - if it's set to true then no commands will be send to Miniserver - it's for testing and development
 * **encrypted** - use AES-256-CBC encrypted web sockets
 * **mqtt_prefix** - MQTT topic prefix for the Loxone Miniserver messages
-*
+
 ```json
 {
     "miniserver": {
