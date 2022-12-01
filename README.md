@@ -155,28 +155,28 @@ When starting the gateway, the first message published over MQTT is the structur
 
 ### Broadcasting a Loxone Miniserver state changes over MQTT
 
-To receive actual states of controls and other elements, you need to subscribe to the following topic:
+To broadcast Loxone Miniserver states over MQTT, the following message is sent:
 
 ```
-<miniserver mqtt_prefix>/<serialnr>/<uuid>/#
+<miniserver mqtt_prefix>/<serialnr>/<uuid> <message>
 ```
 
-The topic prefix `<mqtt_prefix_lox>` will subscribe to messages coming from a Loxone Miniserver, with `serialnr` and the `uuid` of a state, as can be found in the Loxone structure file `LoxAPP3.json` on your Miniserver.
+Each message uses the topic prefix `<mqtt_prefix>` to identify messages coming from a Loxone Miniserver. The next topic level specifies the `serialnr` of the Miniserver, followed by the unique identifier `uuid` representing a control state, similar to the one used in the Loxone structure file `LoxAPP3.json` on your Miniserver.
 
 **Example**
 
 ```
-loxone/0123456789AB/01234567-abcd-0123-ffffeeeeddddcccc 1
+loxone/0123456789AB/01234567-abcd-0123-ffffeeeeddddcccc on
 ```
 
-Where `loxone` is the MQTT prefix, `0123456789AB` is the Miniserver serial nr., and `01234567-abcd-0123-ffffeeeeddddcccc` the uuid of one of the state fields in a control, and `1` the received value.
+Where `loxone` is the MQTT prefix, `0123456789AB` is the Miniserver serial nr., and `01234567-abcd-0123-ffffeeeeddddcccc` the uuid of one of the control state field, and the message is `on`.
 
 ### Sending MQTT control messages to the Loxone Miniserver
 
 To control the Loxone Miniserver, you should send messages to the following MQTT topic:
 
 ```
-<miniserver mqtt_prefix>/<serialnr>/<control-uuid>/cmd
+<miniserver mqtt_prefix>/<serialnr>/<control-uuid>/cmd <value>
 ```
 
 **Example**
@@ -185,4 +185,4 @@ To control the Loxone Miniserver, you should send messages to the following MQTT
 loxone/0123456789AB/01234567-abcd-0123-ffffeeeeddddcccc/cmd off
 ```
 
-In this example, a switch on Miniserver `0123456789AB` with uuid `01234567-abcd-0123-ffffeeeeddddcccc` is switched off.
+In this example, a switch on Miniserver `0123456789AB` with uuid `01234567-abcd-0123-ffffeeeeddddcccc` is switched `off`.
