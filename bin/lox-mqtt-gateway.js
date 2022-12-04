@@ -42,7 +42,7 @@ lox_client.on('get_structure_file', function(data) {
         }
     ));
 
-    mqtt_client.subscribe(lox_mqtt_adaptor.get_topic_for_subscription());
+    mqtt_client.subscribe(lox_mqtt_adaptor.get_topics_for_subscription());
 
     lox_mqtt_adaptor.on('for_mqtt', function(topic, data, retain_){
         let payload = String(data);
